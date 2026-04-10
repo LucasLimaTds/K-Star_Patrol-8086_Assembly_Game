@@ -26,3 +26,13 @@ This project was specifically developed and tested using **GUI Turbo Assembler**
 * **Up Arrow:** Move ship up
 * **Down Arrow:** Move ship down
 * **Spacebar:** Shoot
+
+## 🔧 Customization
+You can easily adjust some game parameters by modifying the following variables inside the `.asm` file:
+
+* **Player Ship Speed:** Change the `velocidade_nave_aliada` variable.
+  * `1` = Slow speed
+  * `2` = Medium speed
+  * `5` = Fast speed
+
+* **Phase Time Limit:** Change the time limit for each phase (in seconds) by modifying both the `tempo_seg` and `reseta_tempo_seg` variables (e.g., set both to `60` for 60 seconds).
