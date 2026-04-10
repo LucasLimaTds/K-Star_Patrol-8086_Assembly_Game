@@ -192,8 +192,8 @@ ajusta_desloc db 0
 
 tempo_jogo dw 0 ; tempo do jogo em FPS
 
-tempo_seg dw 30 ; variavel para mostrar o tempo
-reseta_tempo_seg dw 30 ; variavel que reseta o tempo
+tempo_seg dw 60 ; variavel para mostrar o tempo
+reseta_tempo_seg dw 60 ; variavel que reseta o tempo
 
 contador_inimigos db 0 ; contador de inimigos
 limite_inimigos db 10 ; limite de inimigos (10 setor 1 / 15 setor 2 / 20 setor 3)
