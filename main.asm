@@ -963,32 +963,15 @@ PINTA_NAVES_JOGO proc
     ret
 endp
 
-MOVE_NAVE_CIMA proc
-    push AX
+MOVE_NAVE_VERTICAL proc
+    push AX ;AX positivo = desce | AX negativo = sobe
     
-    mov DX, [pos_inicial_nave+2]
+    mov DX, [pos_inicial_nave+2] ;Apaga a nave na posi??o atual
     mov BX, offset nave_aliada
     call APAGA_15X9
     
-    mov AX, velocidade_nave_aliada
-    sub [pos_inicial_nave+2], AX
-    mov DX, [pos_inicial_nave+2]
-    sub BX, 135
-    call DESENHA_15X9
+    add [pos_inicial_nave+2], AX ;Atualiza a posi??o (o ADD funciona tanto para somar quanto para subtrair, dependendo do sinal de AX)
     
-    pop AX
-    ret
-endp
-
-MOVE_NAVE_BAIXO proc
-    push AX
-    
-    mov DX, [pos_inicial_nave+2]
-    mov BX, offset nave_aliada
-    call APAGA_15X9
-    
-    mov AX, velocidade_nave_aliada
-    add [pos_inicial_nave+2], AX
     mov DX, [pos_inicial_nave+2]
     sub BX, 135
     call DESENHA_15X9
@@ -1016,7 +999,9 @@ VERIFICA_TECLADO_JOGO proc
     cmp DX, [limites_jogo]
     je CONTINUA_VERIFICA_TECLADO_JOGO
     
-    call MOVE_NAVE_CIMA
+    mov AX, velocidade_nave_aliada
+    neg AX  ;Inverte o sinal de AX (ex: se era 5, vira -5)
+    call MOVE_NAVE_VERTICAL
     jmp CONTINUA_VERIFICA_TECLADO_JOGO
     
     VERIFICA_BAIXO_2:
@@ -1027,7 +1012,8 @@ VERIFICA_TECLADO_JOGO proc
     cmp DX, [limites_jogo+2]
     je CONTINUA_VERIFICA_TECLADO_JOGO
     
-    call MOVE_NAVE_BAIXO
+    mov AX, velocidade_nave_aliada
+    call MOVE_NAVE_VERTICAL
     jmp CONTINUA_VERIFICA_TECLADO_JOGO
     
     VERIFICA_TIRO:
