@@ -878,32 +878,22 @@ MOVE_HORIZONTAL proc
     mov DS, AX ; move inicio da memoria de video para DS
     mov CX, 9
     
-    cmp DX, 0   ; verifica se a movimentacao eh para a esquerda (DX==0) ou para a direita (DX==1)
-    jne ESQUERDA
-    std ; DF=1 (movimentacao sera da esquerda para a diretia)
+    std ; DF=1 (movimentacao sera da esquerda para a direita)
+    mov AX, 336
     
-    MOVE_DIREITA:   ; laco que movimenta para a direita
+    cmp DX, 0   ; verifica se a movimentacao eh para da esquerda para a direita (DX==0) ou da direita para a esquerda (DX==1)
+    je MOVER
+    cld ; DF=0 (movimentacao sera da direita para a esquerda)
+    mov AX, 304
+    
+    MOVER:          ; laco que movimenta
     push CX         ; guarda CX
     mov CX, 16      ; ira repetir 16 vezes a instrucao seguinte (a nave tem 15 pixels de largura, e precisa ainda mover o pixel preto)
     rep movsb       ; realiza a movimentacao (copia [DS:SI] para [ES:DI])
-    add SI, 336     
-    add DI, 336     ; vao para a proxima linha
-    pop CX          ; recupera CX (para descontar do loop MOVE_DIREITA)
-    loop MOVE_DIREITA
-    jmp CONTINUA_MOVE_HORIZONTAL    
-   
-    ESQUERDA: ; mesma funcionalidade do segmento anterior, porem, movimentacao eh da direita para a esquerda
-    cld
-    MOVE_ESQUERDA:
-    push CX
-    mov CX, 16
-    rep movsb
-    add SI, 304
-    add DI, 304
-    pop CX
-    loop MOVE_ESQUERDA
-    
-    CONTINUA_MOVE_HORIZONTAL:
+    add SI, AX
+    add DI, AX      ; vai para a proxima linha
+    pop CX          ; recupera CX (para descontar do loop MOVER)
+    loop MOVER
     
     pop DS
     pop CX
